@@ -12,7 +12,7 @@ import {
   faWhatsapp,
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
-import {} from "react";
+import { motion } from "framer-motion";
 import {
   faArrowRotateLeft,
   faHeadset,
@@ -21,13 +21,31 @@ import {
   faWallet,
   faX,
 } from "@fortawesome/free-solid-svg-icons";
+import { theme } from "../config/theme";
+
+const MotionDiv = motion.div;
 
 export const Footer = () => {
   return (
     <>
-      <div id="footer_container_parent">
+      <MotionDiv
+        id="footer_container_parent"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        style={{
+          background: theme.colors.surfaceDark,
+          color: theme.colors.text.inverse,
+        }}
+      >
         <div id="footer_container_1">
-          <div className="footer_container_1_heading">
+          <div
+            className="footer_container_1_heading"
+            style={{
+              color: theme.colors.text.inverse,
+            }}
+          >
             <p>GET AHEAD OF THE STYLE CURVE</p>
             <p>SUBSCRIBE TO THE FASHION NEWSLETTER</p>
           </div>
@@ -40,77 +58,83 @@ export const Footer = () => {
                   width: "100%",
                   border: "none",
                   fontSize: "0.8rem",
+                  borderRadius: theme.borderRadius.md,
                 }}
                 type="text"
                 placeholder="YOUR EMAIL ADDRESS"
               />
             </p>
-            <p style={{ color: "#00cccc", fontWeight: "bold" }}>JOIN</p>
+            <MotionDiv
+              as="p"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              style={{
+                color: theme.colors.primary,
+                fontWeight: "bold",
+                cursor: "pointer",
+              }}
+            >
+              JOIN
+            </MotionDiv>
           </div>
 
           <div className="footer_container_1_icons">
-            <p>
-              <FontAwesomeIcon icon={faFacebook} />
-            </p>
-            <p>
-              <FontAwesomeIcon icon={faInstagram} />
-            </p>
-            <p>
-              <FontAwesomeIcon icon={faX} />
-            </p>
-            <p>
-              <FontAwesomeIcon icon={faYoutube} />
-            </p>
-            <p>
-              <FontAwesomeIcon icon={faWhatsapp} />
-            </p>
+            {[faFacebook, faInstagram, faX, faYoutube, faWhatsapp].map(
+              (icon, index) => (
+                <MotionDiv
+                  key={index}
+                  as="p"
+                  whileHover={{ scale: 1.2, color: theme.colors.primary }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    cursor: "pointer",
+                  }}
+                >
+                  <FontAwesomeIcon icon={icon} />
+                </MotionDiv>
+              )
+            )}
           </div>
         </div>
 
         <div id="footer_container_2_parent">
           <div id="footer_container_2">
-            <div>
-              <p className="footer_container_2_icons">
-                <FontAwesomeIcon icon={faArrowRotateLeft} />
-              </p>{" "}
-              <p className="footer_container_2_heading">EASY RETURNS</p>
-            </div>
-            <div>
-              <p className="footer_container_2_icons">
-                <FontAwesomeIcon icon={faHeadset} />
-              </p>{" "}
-              <p className="footer_container_2_heading">1800-180-1800</p>
-            </div>
-            <div>
-              <p className="footer_container_2_icons">
-                <FontAwesomeIcon icon={faTruck} />
-              </p>{" "}
-              <p className="footer_container_2_heading">FREE SHIPPING</p>
-            </div>
-            <div>
-              <p className="footer_container_2_icons">
-                <FontAwesomeIcon icon={faIndianRupee} />
-              </p>{" "}
-              <p className="footer_container_2_heading">CASH ON DELIVERY</p>
-            </div>
-            <div>
-              <p className="footer_container_2_icons">
-                <FontAwesomeIcon icon={faWallet} />
-              </p>{" "}
-              <p className="footer_container_2_heading">SECURE MONEY</p>
-            </div>
-            <div>
-              <p className="footer_container_2_icons">
-                <FontAwesomeIcon icon={faIntercom} />
-              </p>{" "}
-              <p className="footer_container_2_heading">FREE ALTERATIONS</p>
-            </div>
+            {[
+              { icon: faArrowRotateLeft, text: "EASY RETURNS" },
+              { icon: faHeadset, text: "1800-180-1800" },
+              { icon: faTruck, text: "FREE SHIPPING" },
+              { icon: faIndianRupee, text: "CASH ON DELIVERY" },
+              { icon: faWallet, text: "SECURE MONEY" },
+              { icon: faIntercom, text: "FREE ALTERATIONS" },
+            ].map((item, index) => (
+              <MotionDiv
+                key={index}
+                as="div"
+                whileHover={{ y: -5, color: theme.colors.primary }}
+                transition={{ duration: 0.2 }}
+              >
+                <p className="footer_container_2_icons">
+                  <FontAwesomeIcon icon={item.icon} />
+                </p>
+                <p className="footer_container_2_heading">{item.text}</p>
+              </MotionDiv>
+            ))}
           </div>
         </div>
 
-        <div id="footer_container_3">
+        <div
+          id="footer_container_3"
+          style={{
+            color: theme.colors.text.inverse,
+          }}
+        >
           <div>
-            <p className="footer_container_3_heading">WOMEN</p>
+            <p
+              className="footer_container_3_heading"
+              style={{ color: theme.colors.primary }}
+            >
+              WOMEN
+            </p>
             <p>Westernwear</p>
             <p>Ethnicwear</p>
             <p>Sports & Activewear</p>
@@ -125,7 +149,12 @@ export const Footer = () => {
           </div>
 
           <div>
-            <p className="footer_container_3_heading">MEN</p>
+            <p
+              className="footer_container_3_heading"
+              style={{ color: theme.colors.primary }}
+            >
+              MEN
+            </p>
             <p>Top Wear</p>
             <p>Ethnic Wear</p>
             <p>Accessories</p>
@@ -138,7 +167,12 @@ export const Footer = () => {
           </div>
 
           <div>
-            <p className="footer_container_3_heading">KIDS</p>
+            <p
+              className="footer_container_3_heading"
+              style={{ color: theme.colors.primary }}
+            >
+              KIDS
+            </p>
             <p>Boys Topwear</p>
             <p>Girls Bootomwear</p>
             <p>Girls Topwear</p>
@@ -161,7 +195,12 @@ export const Footer = () => {
           </div>
 
           <div>
-            <p className="footer_container_3_heading">HOME</p>
+            <p
+              className="footer_container_3_heading"
+              style={{ color: theme.colors.primary }}
+            >
+              HOME
+            </p>
             <p>Bath</p>
             <p>Bed</p>
             <p>Kitchenware</p>
@@ -170,11 +209,21 @@ export const Footer = () => {
           </div>
 
           <div>
-            <p className="footer_container_3_heading">BRANDS</p>
+            <p
+              className="footer_container_3_heading"
+              style={{ color: theme.colors.primary }}
+            >
+              BRANDS
+            </p>
           </div>
 
           <div>
-            <p className="footer_container_3_heading">BEAUTY</p>
+            <p
+              className="footer_container_3_heading"
+              style={{ color: theme.colors.primary }}
+            >
+              BEAUTY
+            </p>
             <p>Makeup</p>
             <p>Mens Fragrances</p>
             <p>Women Fragrances</p>
@@ -182,7 +231,12 @@ export const Footer = () => {
           </div>
 
           <div>
-            <p className="footer_container_3_heading">ABOUT</p>
+            <p
+              className="footer_container_3_heading"
+              style={{ color: theme.colors.primary }}
+            >
+              ABOUT
+            </p>
             <p>About us</p>
             <p>Greencard</p>
             <p>Store Locator</p>
@@ -191,7 +245,12 @@ export const Footer = () => {
           </div>
 
           <div>
-            <p className="footer_container_3_heading">CUSTOMER</p>
+            <p
+              className="footer_container_3_heading"
+              style={{ color: theme.colors.primary }}
+            >
+              CUSTOMER
+            </p>
             <p>Track Order</p>
             <p>FAQ</p>
             <p>Customer Support</p>
@@ -215,7 +274,7 @@ export const Footer = () => {
             />
           </p>
         </div>
-        <hr />
+        <hr style={{ border: `1px solid ${theme.colors.border.dark}` }} />
 
         <div id="footer_container_5">
           <div>
@@ -246,7 +305,7 @@ export const Footer = () => {
             />
           </p>
         </div>
-      </div>
+      </MotionDiv>
     </>
   );
 };

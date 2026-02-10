@@ -9,10 +9,13 @@ import {
   faTruck,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { Footer } from "../landingPage/Footer";
 import { useCartCustom } from "../hooks/cartCustom";
+import { theme } from "../config/theme";
 
-// eslint-disable-next-line react/prop-types
+const MotionDiv = motion.div;
+
 export const ProductDetails = ({ category }) => {
   const { id } = useParams();
   const product = useSelector((state) => state.fetchData.data);
@@ -23,103 +26,167 @@ export const ProductDetails = ({ category }) => {
 
   return (
     <>
-      <div id="product_details_page">
+      <MotionDiv
+        id="product_details_page"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        style={{
+          background: theme.colors.background,
+          minHeight: "100vh",
+        }}
+      >
         {products.map((product) => {
           if (product.id === id) {
             return (
-              <div key={product.id} id="product_details_page_container">
+              <MotionDiv
+                key={product.id}
+                id="product_details_page_container"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+              >
                 <div className="product_details_img">
-                  <img
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      borderRadius: "10px",
-                    }}
-                    src={product.image}
-                    alt="Product"
-                  />
-                  <img
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      borderRadius: "10px",
-                    }}
-                    src={product.image}
-                    alt="Product"
-                  />
-                  <img
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      borderRadius: "10px",
-                    }}
-                    src={product.image}
-                    alt="Product"
-                  />
-                  <img
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      borderRadius: "10px",
-                    }}
-                    src={product.image}
-                    alt="Product"
-                  />
+                  {[1, 2, 3, 4].map((_, index) => (
+                    <MotionDiv
+                      key={index}
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <img
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          borderRadius: theme.borderRadius.lg,
+                          boxShadow: theme.shadows.md,
+                        }}
+                        src={product.image}
+                        alt="Product"
+                      />
+                    </MotionDiv>
+                  ))}
                 </div>
                 <div>
-                  <p className="product_details_brand">{product.brand}</p>
-                  <div className="product_details_features">
+                  <p
+                    className="product_details_brand"
+                    style={{
+                      color: theme.colors.text.primary,
+                      fontSize: "2rem",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {product.brand}
+                  </p>
+                  <div
+                    className="product_details_features"
+                    style={{
+                      color: theme.colors.text.secondary,
+                    }}
+                  >
                     <p>{product.features.material}</p>
                     <p>{product.features.fit}</p>
                     <p>{product.features.size}</p>
                     <p>{product.features.color}</p>
                     <p>{product.features.sleeve_type}</p>
                   </div>
-                  <p className="product_details_first_one">
-                    <strong style={{ color: "yellow" }}>
+                  <p
+                    className="product_details_first_one"
+                    style={{
+                      color: theme.colors.text.secondary,
+                    }}
+                  >
+                    <strong style={{ color: theme.colors.warning }}>
                       <FontAwesomeIcon icon={faStar} />
                     </strong>{" "}
                     Be the first one to rate
                   </p>
-                  <p className="product_details_price">${product.price}</p>
+                  <p
+                    className="product_details_price"
+                    style={{
+                      color: theme.colors.primary,
+                      fontSize: "2rem",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    ${product.price}
+                  </p>
 
                   <div>
-                    <p className="navbar_mens_size_cards_title product_details_size_heading">
+                    <p
+                      className="navbar_mens_size_cards_title product_details_size_heading"
+                      style={{
+                        color: theme.colors.text.primary,
+                        fontWeight: "600",
+                      }}
+                    >
                       SELECT SIZE
                     </p>
                     <div className="navbar_mens_size_cards">
-                      <p onClick={() => handleSizeClick("XS")}>XS</p>
-                      <p
-                        onClick={() => handleSizeClick("S")}
-                        style={{
-                          backgroundColor: "transparent",
-                          color: "black",
-                        }}
-                      >
-                        S
-                      </p>
-                      <p onClick={() => handleSizeClick("M")}>M</p>
-                      <p onClick={() => handleSizeClick("L")}>L</p>
-                      <p onClick={() => handleSizeClick("XL")}>XL</p>
-                      <p onClick={() => handleSizeClick("XXL")}>XXL</p>
-                      <p onClick={() => handleSizeClick("2XL")}>2XL</p>
+                      {["XS", "S", "M", "L", "XL", "XXL", "2XL"].map(
+                        (size) => (
+                          <MotionDiv
+                            key={size}
+                            as="p"
+                            onClick={() => handleSizeClick(size)}
+                            whileHover={{
+                              scale: 1.1,
+                              backgroundColor: theme.colors.primary,
+                              color: "white",
+                            }}
+                            whileTap={{ scale: 0.95 }}
+                            style={{
+                              cursor: "pointer",
+                              border: `2px solid ${theme.colors.border.main}`,
+                              borderRadius: theme.borderRadius.md,
+                              transition: theme.transitions.normal,
+                            }}
+                          >
+                            {size}
+                          </MotionDiv>
+                        )
+                      )}
                     </div>
                   </div>
 
                   <div className="product_details_quantity">
-                    <p>QUANTITY</p>
+                    <p
+                      style={{
+                        color: theme.colors.text.primary,
+                        fontWeight: "600",
+                      }}
+                    >
+                      QUANTITY
+                    </p>
                     <div className="product_details_quantity_counter">
-                      <p
+                      <MotionDiv
+                        as="p"
                         onClick={() => {
                           quantity > 1 && setQuantity((prev) => prev - 1);
                         }}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        style={{
+                          cursor: "pointer",
+                          color: theme.colors.primary,
+                        }}
                       >
                         <FontAwesomeIcon icon={faMinus} />
+                      </MotionDiv>
+                      <p style={{ color: theme.colors.text.primary }}>
+                        {quantity}
                       </p>
-                      <p>{quantity}</p>
-                      <p onClick={() => setQuantity((prev) => prev + 1)}>
+                      <MotionDiv
+                        as="p"
+                        onClick={() => setQuantity((prev) => prev + 1)}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        style={{
+                          cursor: "pointer",
+                          color: theme.colors.primary,
+                        }}
+                      >
                         <FontAwesomeIcon icon={faPlus} />
-                      </p>
+                      </MotionDiv>
                     </div>
                   </div>
 
@@ -131,8 +198,14 @@ export const ProductDetails = ({ category }) => {
                       margin: "1vh 0 2vh 0",
                     }}
                   >
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <p>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        color: theme.colors.text.secondary,
+                      }}
+                    >
+                      <p style={{ color: theme.colors.primary }}>
                         <FontAwesomeIcon icon={faTruck} />
                       </p>
                       <div style={{ fontSize: "0.9rem", marginLeft: "1vw" }}>
@@ -142,21 +215,25 @@ export const ProductDetails = ({ category }) => {
                         </p>
                       </div>
                     </div>
-                    <p style={{ color: "green" }}>
+                    <p>
                       <input
                         style={{
                           width: "7vw",
                           padding: "0.5vh 0.5vw",
-                          borderRadius: "5px",
-                          border: "none",
-                          outline: "0.2px solid black",
+                          borderRadius: theme.borderRadius.md,
+                          border: `2px solid ${theme.colors.border.main}`,
+                          outline: "none",
                         }}
                         type="number"
                         placeholder="Pincode"
                       />
                     </p>
                   </div>
-                  <hr />
+                  <hr
+                    style={{
+                      border: `1px solid ${theme.colors.border.light}`,
+                    }}
+                  />
 
                   <div
                     style={{
@@ -166,40 +243,72 @@ export const ProductDetails = ({ category }) => {
                       margin: "2vh 0 4vh 0",
                     }}
                   >
-                    <p
+                    <MotionDiv
+                      as="p"
+                      whileHover={{
+                        scale: 1.05,
+                        boxShadow: theme.shadows.md,
+                      }}
+                      whileTap={{ scale: 0.95 }}
                       style={{
                         padding: "2vh 3vw",
-                        border: "1px solid black",
+                        border: `2px solid ${theme.colors.primary}`,
                         fontSize: "0.9rem",
-                        borderRadius: "30px",
+                        borderRadius: theme.borderRadius.full,
+                        cursor: "pointer",
+                        color: theme.colors.primary,
+                        transition: theme.transitions.normal,
                       }}
                     >
                       ADD TO WISHLIST
-                    </p>
-                    <p
+                    </MotionDiv>
+                    <MotionDiv
+                      as="p"
                       onClick={() => {
                         addToCart(product, category);
                       }}
+                      whileHover={{
+                        scale: 1.05,
+                        boxShadow: theme.shadows.lg,
+                      }}
+                      whileTap={{ scale: 0.95 }}
                       style={{
                         padding: "2vh 4vw",
-                        border: "1px solid black",
+                        border: "none",
                         fontSize: "0.9rem",
-                        borderRadius: "30px",
-                        backgroundColor: "#00cccc",
+                        borderRadius: theme.borderRadius.full,
+                        background: theme.colors.gradient.primary,
                         color: "white",
+                        cursor: "pointer",
+                        transition: theme.transitions.normal,
                       }}
                     >
                       ADD TO BAG
-                    </p>
+                    </MotionDiv>
                   </div>
 
-                  <hr />
+                  <hr
+                    style={{
+                      border: `1px solid ${theme.colors.border.light}`,
+                    }}
+                  />
 
                   <div className="product_details_description">
-                    <p className="product_details_description_heading">
-                      MATERIAL FIT
+                    <p
+                      className="product_details_description_heading"
+                      style={{
+                        color: theme.colors.text.primary,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      MATERIAL & FIT
                     </p>
-                    <div className="product_details_description_details">
+                    <div
+                      className="product_details_description_details"
+                      style={{
+                        color: theme.colors.text.secondary,
+                      }}
+                    >
                       <p>
                         <FontAwesomeIcon icon={faMinus} /> &nbsp;Product Type:{" "}
                         {product.title}
@@ -228,7 +337,13 @@ export const ProductDetails = ({ category }) => {
                         material: {product.features.material}
                       </p>
                     </div>
-                    <p className="product_details_description_desc">
+                    <p
+                      className="product_details_description_desc"
+                      style={{
+                        color: theme.colors.text.secondary,
+                        lineHeight: "1.6",
+                      }}
+                    >
                       From beach days to pool parties, these fits have you
                       covered. The T-shirt has a crew neck, half sleeves, a
                       chest pocket and a comfort fit with dynamic prints.
@@ -238,41 +353,39 @@ export const ProductDetails = ({ category }) => {
                   </div>
 
                   <div className="product_details_product_details">
-                    <div>
-                      <p>FABRIC CARE</p>
-                      <p>
-                        {" "}
-                        <FontAwesomeIcon icon={faPlus} />
-                      </p>
-                    </div>
-                    <div>
-                      <p>DELIVER AND RETURNS</p>
-                      <p>
-                        {" "}
-                        <FontAwesomeIcon icon={faPlus} />
-                      </p>
-                    </div>
-                    <div>
-                      <p>DETAILS</p>
-                      <p>
-                        {" "}
-                        <FontAwesomeIcon icon={faPlus} />
-                      </p>
-                    </div>
-                    <div>
-                      <p>REVIEWS</p>
-                      <p>
-                        {" "}
-                        <FontAwesomeIcon icon={faPlus} />
-                      </p>
-                    </div>
+                    {[
+                      "FABRIC CARE",
+                      "DELIVER AND RETURNS",
+                      "DETAILS",
+                      "REVIEWS",
+                    ].map((item) => (
+                      <MotionDiv
+                        key={item}
+                        as="div"
+                        whileHover={{
+                          backgroundColor: theme.colors.background,
+                        }}
+                        style={{
+                          cursor: "pointer",
+                          padding: "1rem",
+                          borderRadius: theme.borderRadius.md,
+                          transition: theme.transitions.normal,
+                          color: theme.colors.text.primary,
+                        }}
+                      >
+                        <p>{item}</p>
+                        <p>
+                          <FontAwesomeIcon icon={faPlus} />
+                        </p>
+                      </MotionDiv>
+                    ))}
                   </div>
                 </div>
-              </div>
+              </MotionDiv>
             );
           }
         })}
-      </div>
+      </MotionDiv>
 
       <Footer />
     </>
