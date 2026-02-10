@@ -4,8 +4,9 @@
   padding: 0;
 }
 
-#carousal_container {
-  background-color: #00b0b5;
+#navbar_wrapper {
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 #navbar {
@@ -15,7 +16,7 @@
   margin: 0 auto;
   grid-template-columns: 20% 45% 25% 10%;
   padding: 1vh 0;
-  color: white;
+  color: #111827;
   align-items: center;
 }
 
@@ -27,44 +28,67 @@
 .navbar_category {
   font-size: 1rem;
   padding: 0.5rem 0;
-  color: white;
+  color: #111827;
   text-decoration: none;
   border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.navbar_category{
+.navbar_category:hover {
+  color: #6366F1;
+}
+
+.navbar_category {
   outline: none;
   border: none;
   text-decoration: none;
-  color: white;
 }
 
 .navbar_search_parent {
   display: flex;
-  border: 1px solid white;
-  border-radius: 10px;
+  border: 2px solid #E5E7EB;
+  border-radius: 0.75rem;
   width: 80%;
+  transition: border-color 0.3s ease;
+}
+
+.navbar_search_parent:focus-within {
+  border-color: #6366F1;
 }
 
 .navbar_search {
   font-size: 1rem;
   padding: 1.3vh 1vw;
-  border-radius: 10px;
+  border-radius: 0.75rem;
   border: none;
   background-color: transparent;
-  color: white;
+  color: #111827;
 }
 
-.navbar_search:focus, .navbar_search_category:focus {
+.navbar_search::placeholder {
+  color: #9CA3AF;
+}
+
+.navbar_search:focus,
+.navbar_search_category:focus {
   outline: none;
+}
+
+.navbar_search_category {
+  color: #111827;
 }
 
 .navbar_search_icon {
   text-align: center;
   align-self: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
-/* carousal container starts : */
+.navbar_search_icon:hover {
+  transform: scale(1.1);
+}
 
 #carousal_container {
   position: relative;
@@ -91,10 +115,20 @@
   position: absolute;
   font-size: 3rem;
   font-weight: bold;
-  background-color: transparent;
+  background-color: rgba(99, 102, 241, 0.9);
   border: none;
   color: white;
   top: 30vh;
+  padding: 1rem 1.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.carousal_btn_next:hover,
+.carousal_btn_prev:hover {
+  background-color: rgba(79, 70, 229, 1);
+  transform: scale(1.1);
 }
 
 .carousal_btn_prev {

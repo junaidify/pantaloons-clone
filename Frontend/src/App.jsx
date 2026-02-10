@@ -9,6 +9,7 @@ import { BeautyProduct } from "./productpage/BeautyProduct";
 import { Wishlist } from "./pages/Wishlist";
 import { Navbar } from "./landingPage/Navbar";
 import { Cart } from "./pages/Cart";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -46,15 +47,24 @@ function App() {
         <Route
           path="/navbar/wishlist"
           element={
-            <Wishlist
-              category={"mens"}
-              cssClass={"navbar_mens"}
-              wishCategory={"mens"}
-            />
+            <ProtectedRoute>
+              <Wishlist
+                category={"mens"}
+                cssClass={"navbar_mens"}
+                wishCategory={"mens"}
+              />
+            </ProtectedRoute>
           }
         />
 
-        <Route path="/navbar/cart" element={<Cart/>} />
+        <Route
+          path="/navbar/cart"
+          element={
+            <ProtectedRoute>
+              <Cart />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </>
   );

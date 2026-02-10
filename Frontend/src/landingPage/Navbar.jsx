@@ -1,23 +1,20 @@
-import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faAngleLeft,
-  faAngleRight,
   faCartShopping,
   faHeart,
   faMagnifyingGlass,
   faUser,
+  faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
-import { Box, Grid, GridItem, Image } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Image, Button, Menu, MenuButton, MenuList, MenuItem, Avatar } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import "../styles/navbar.css";
-// import img_logo_2 from "../images/img_logo_2.png";
-import img_1 from "../images/carousal/img_1.avif";
-import img_2 from "../images/carousal/img_1.avif";
-import img_3 from "../images/carousal/img_3.avif";
-import img_4 from "../images/carousal/img_4.avif";
-import img_5 from "../images/carousal/img_5.avif";
 import { Link } from "react-router-dom";
 import { useSearchBar } from "../redux/searchbar";
+import { useAuth0 } from "@auth0/auth0-react";
+import { theme } from "../config/theme";
+
+const MotionBox = motion(Box);
 
 export const Navbar = () => {
   const {
@@ -28,54 +25,127 @@ export const Navbar = () => {
     setSearchTerm,
   } = useSearchBar();
 
+  const { loginWithRedirect, logout, user, isAuthenticated, isLoading } = useAuth0();
+
   return (
     <>
-      <div id="carousal_container">
+      <MotionBox
+        id="navbar_wrapper"
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5 }}
+        style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 1000,
+          background: theme.colors.surface,
+          boxShadow: theme.shadows.md,
+        }}
+      >
         <div id="navbar">
           <Box boxSize="sm" width="90%" height="8vh">
             <Link className="link_comp" to="/">
-              <Image
-                w="100%"
-                h="100%"
-                src="https://imagescdn.pantaloons.com/img/app/brands/pantaloons/icons/logo_pantaloons.svg"
-                alt="Logo"
-              />
+              <MotionBox
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
+              >
+                <Image
+                  w="100%"
+                  h="100%"
+                  src="https://imagescdn.pantaloons.com/img/app/brands/pantaloons/icons/logo_pantaloons.svg"
+                  alt="Logo"
+                />
+              </MotionBox>
             </Link>
           </Box>
 
           <div style={{ marginLeft: "5%" }}>
             <Grid templateColumns="repeat(5, 1fr)">
               <Link to="/navbar/mens">
-                <GridItem className="navbar_category" w="100%" h="auto">
+                <MotionBox
+                  as={GridItem}
+                  className="navbar_category"
+                  w="100%"
+                  h="auto"
+                  whileHover={{ y: -2 }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    color: theme.colors.text.primary,
+                    fontWeight: "600",
+                  }}
+                >
                   MEN
-                </GridItem>
+                </MotionBox>
               </Link>
               <Link to="/navbar/women">
-                <GridItem className="navbar_category" w="100%" h="auto">
+                <MotionBox
+                  as={GridItem}
+                  className="navbar_category"
+                  w="100%"
+                  h="auto"
+                  whileHover={{ y: -2 }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    color: theme.colors.text.primary,
+                    fontWeight: "600",
+                  }}
+                >
                   WOMEN
-                </GridItem>
+                </MotionBox>
               </Link>
               <Link to="/navbar/kids">
-                <GridItem className="navbar_category" w="100%" h="auto">
+                <MotionBox
+                  as={GridItem}
+                  className="navbar_category"
+                  w="100%"
+                  h="auto"
+                  whileHover={{ y: -2 }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    color: theme.colors.text.primary,
+                    fontWeight: "600",
+                  }}
+                >
                   KIDS
-                </GridItem>
+                </MotionBox>
               </Link>
               <Link to="/navbar/home">
-                <GridItem className="navbar_category" w="100%" h="auto">
+                <MotionBox
+                  as={GridItem}
+                  className="navbar_category"
+                  w="100%"
+                  h="auto"
+                  whileHover={{ y: -2 }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    color: theme.colors.text.primary,
+                    fontWeight: "600",
+                  }}
+                >
                   HOME
-                </GridItem>
+                </MotionBox>
               </Link>
 
               <Link to="/navbar/beauty">
-                <GridItem className="navbar_category" w="100%" h="auto">
+                <MotionBox
+                  as={GridItem}
+                  className="navbar_category"
+                  w="100%"
+                  h="auto"
+                  whileHover={{ y: -2 }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    color: theme.colors.text.primary,
+                    fontWeight: "600",
+                  }}
+                >
                   BEAUTY
-                </GridItem>
+                </MotionBox>
               </Link>
             </Grid>
           </div>
 
           <Grid
-            bg="blue.500"
             className="navbar_search_parent"
             gridTemplateColumns="60% 25% 15%"
             gap={3}
@@ -86,14 +156,20 @@ export const Navbar = () => {
               placeholder="Search products..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              style={{
+                borderRadius: theme.borderRadius.lg,
+                border: `2px solid ${theme.colors.border.light}`,
+                transition: theme.transitions.normal,
+              }}
             />
             <select
               value={selectedCategory}
               className="navbar_search_category"
               style={{
-                borderRadius: "10px",
+                borderRadius: theme.borderRadius.lg,
                 backgroundColor: "inherit",
-                border: "none",
+                border: `2px solid ${theme.colors.border.light}`,
+                color: theme.colors.text.primary,
               }}
               onChange={(e) => setSelectedCategory(e.target.value)}
             >
@@ -103,9 +179,19 @@ export const Navbar = () => {
               <option value="home">Home</option>
               <option value="beauty">Beauty</option>
             </select>
-            <p className="navbar_search_icon" onClick={handleSearch}>
+            <MotionBox
+              as="p"
+              className="navbar_search_icon"
+              onClick={handleSearch}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              style={{
+                cursor: "pointer",
+                color: theme.colors.primary,
+              }}
+            >
               <FontAwesomeIcon icon={faMagnifyingGlass} />
-            </p>
+            </MotionBox>
           </Grid>
 
           <Grid templateColumns="repeat(3, 1fr)" gap={4}>
@@ -113,24 +199,72 @@ export const Navbar = () => {
               className="navbar_category"
               w="100%"
               h="auto"
-              bg="blue.500"
             >
-              <FontAwesomeIcon icon={faUser} />
+              {!isLoading && (
+                <>
+                  {isAuthenticated ? (
+                    <Menu>
+                      <MenuButton
+                        as={Button}
+                        variant="ghost"
+                        p={0}
+                        _hover={{ bg: "transparent" }}
+                      >
+                        <Avatar
+                          size="sm"
+                          name={user?.name}
+                          src={user?.picture}
+                        />
+                      </MenuButton>
+                      <MenuList>
+                        <MenuItem isDisabled>{user?.name}</MenuItem>
+                        <MenuItem
+                          onClick={() => logout({ returnTo: window.location.origin })}
+                          icon={<FontAwesomeIcon icon={faRightFromBracket} />}
+                        >
+                          Logout
+                        </MenuItem>
+                      </MenuList>
+                    </Menu>
+                  ) : (
+                    <MotionBox
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => loginWithRedirect()}
+                      style={{ cursor: "pointer", color: theme.colors.primary }}
+                    >
+                      <FontAwesomeIcon icon={faUser} />
+                    </MotionBox>
+                  )}
+                </>
+              )}
             </GridItem>
 
             <GridItem className="navbar_category" w="100%" h="auto">
               <Link to="/navbar/wishlist">
-                <FontAwesomeIcon icon={faHeart} style={{ color: "white" }} />
+                <MotionBox
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  style={{ color: theme.colors.secondary }}
+                >
+                  <FontAwesomeIcon icon={faHeart} />
+                </MotionBox>
               </Link>
             </GridItem>
             <GridItem className="navbar_category" w="100%" h="auto">
               <Link to="/navbar/cart">
-                <FontAwesomeIcon icon={faCartShopping} />
+                <MotionBox
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  style={{ color: theme.colors.primary }}
+                >
+                  <FontAwesomeIcon icon={faCartShopping} />
+                </MotionBox>
               </Link>
             </GridItem>
           </Grid>
         </div>
-      </div>
+      </MotionBox>
     </>
   );
 };

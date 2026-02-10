@@ -1,178 +1,190 @@
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
 #product_page_container {
-  width: 80%;
   display: grid;
-  grid-template-columns: 20% 80%;
-  margin: 10vh auto;
-  column-gap: 2vw;
-}
-
-.product_page_checkbox {
-  transform: scale3d(1.5, 1.5, 1.5);
-}
-
-.product_page_checkbox_content {
-  font-size: 1rem;
-  margin-left: 0.5rem;
+  grid-template-columns: 20% 75%;
+  gap: 2rem;
+  width: 90%;
+  margin: 2rem auto;
+  min-height: 100vh;
+  background: #F9FAFB;
 }
 
 .parent_of_checkbox {
-  display: flex;
-  flex-direction: column;
-  row-gap: 1vh;
-  margin-top: 15vh;
-  box-shadow: 2px 5px 8px 0px rgba(0, 0, 0, 0.5);
-  height: 50vh;
-  padding: 2vh 1.5vw;
-  border-radius: 10px;
+  background: #ffffff;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  height: fit-content;
+  position: sticky;
+  top: 100px;
 }
 
 .heading_of_product_checkbox {
-  font-size: 1.2rem;
   font-weight: bold;
-  margin: 1vh 0;
-}
-
-/* Product page-Content */
-
-.navbar_mens_parent_of_cards {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  column-gap: 2vw;
-}
-
-.navbar_mens_cards {
-  border-radius: 5px;
-  flex: 0 0 auto;
-  margin: 2vh 0;
-  position: relative;
-  padding: 2vh 1vw;
-  border-radius: 10px;
-  box-shadow: 2px 5px 8px 0px rgba(0, 0, 0, 0.5);
-}
-
-.cards_img {
-  width: 100%;
-  height: 100%;
-  object-fit: fill;
-}
-
-.navbar_mens_cards_brand {
   font-size: 1.2rem;
-  margin-top: 2vh;
+  color: #111827;
+  margin-bottom: 1.5rem;
 }
 
-.navbar_mens_cards_features {
-  display: flex;
-  font-size: 0.9rem;
-  margin: 0.9vh 0;
+.product_page_checkbox {
+  margin-right: 0.5rem;
+  accent-color: #6366F1;
 }
 
-.navbar_mens_cards_price {
-  font-weight: bold;
-  font-size: 0.9rem;
-  margin: 1.5vh 0;
+.product_page_checkbox_content {
+  color: #6B7280;
+  font-weight: 500;
+  cursor: pointer;
 }
 
-.navbar_mens_cards_heart {
-  position: absolute;
-  top: 4vh;
-  right: 2vw;
-  font-size: 1.5rem;
-  color: rgb(206, 130, 130);
+.parent_of_checkbox > div {
+  margin: 1rem 0;
 }
 
-.navbar_mens_cards_heart:active{
-  color: red;
-}
-
-.navbar_mens_cards_img_parent {
-  height: 55vh;
+.product_page_input_filter {
   width: 100%;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 2px solid #E5E7EB;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.product_page_input_filter:focus {
+  border-color: #6366F1;
+}
+
+.navbar_mens_parent_of_cards_of_sizes {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.navbar_mens_product_heading {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #111827;
+  margin-bottom: 2rem;
 }
 
 .navbar_mens_size_cards_title {
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-weight: 600;
+  color: #111827;
+  margin: 1.5rem 0 1rem 0;
 }
 
 .navbar_mens_size_cards {
   display: flex;
-  column-gap: 1.5vw;
-  margin-top: 2vh;
-
-  p {
-    border: 1px solid black;
-    padding: 1vh 1vw;
-    border-radius: 5px;
-  }
-
-  p:hover {
-    cursor: pointer;
-    background-color: rgb(131, 122, 122);
-    color: white;
-  }
-
-  p:nth-child(2) {
-    background-color: black;
-    color: white;
-  }
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
-.navbar_mens_product_heading {
-  font-style: italic;
-  font-size: 2rem;
-  font-weight: bold;
-  margin: 2vh 0 4vh 0;
-  text-align: center;
+.navbar_mens_size_cards p {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #D1D5DB;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #111827;
 }
 
-.product_page_input_filter{
-  width: 60%;
-  margin: 1vh auto 1vh 1.5vw;
-  padding: 0.3vh 0.5vw;
-  font-size: 0.7rem;
-  border-radius: 5px;
-  text-decoration: none;
-  border: 0.5px solid black;
+.navbar_mens_size_cards p:hover {
+  background: #6366F1;
+  color: white;
+  border-color: #6366F1;
+  transform: scale(1.1);
 }
 
+.navbar_mens_all_cards_components {
+  overflow-x: auto;
+  padding-bottom: 1rem;
+}
 
-/*--------------  WishList Page ------------ */
-
-.navbar_mens_wishlist_cards_container{
+.navbar_mens_parent_of_cards {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  width: 80%;
-  margin: 0 auto;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
 }
 
-.wishlist_card_features{
-  display: flex;
-  font-size: 0.9rem;
-}
-
-.wishlist_cards, .navbar_mens_cards{
+.navbar_mens_cards {
+  background: #ffffff;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
   position: relative;
 }
 
-.wishlist_card_remove_btn{
-  position: absolute;
-  bottom: 10.5vh;
-  right: 3vw;
-  font-size: 2rem;
-  color: rgb(206, 130, 130);
-  transition: transform 0.3s ease-in-out ;
+.navbar_mens_cards:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
-.wishlist_card_remove_btn:active{
-  background-color: red;
-  transform: scale3d(1.5, 1.5, 1.5);
-  border-radius: 5px;
+.navbar_mens_cards_img_parent {
+  width: 100%;
+  height: 350px;
+  overflow: hidden;
+}
+
+.navbar_mens_cards_img_parent img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.navbar_mens_cards:hover .navbar_mens_cards_img_parent img {
+  transform: scale(1.05);
+}
+
+.navbar_mens_cards_brand {
+  padding: 0.5rem 1rem 0;
+  font-weight: 600;
+  color: #111827;
+  font-size: 1.1rem;
+}
+
+.navbar_mens_cards_features {
+  padding: 0.5rem 1rem;
+  color: #6B7280;
+  font-size: 0.9rem;
+}
+
+.navbar_mens_cards_price {
+  padding: 0.5rem 1rem 1rem;
+  font-weight: bold;
+  color: #6366F1;
+  font-size: 1.2rem;
+}
+
+.navbar_mens_cards_heart {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0.5rem;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  color: #EC4899;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.navbar_mens_cards_heart:hover {
+  transform: scale(1.2);
+  background: #ffffff;
+}
+
+@media (max-width: 768px) {
+  #product_page_container {
+    grid-template-columns: 1fr;
+  }
+
+  .parent_of_checkbox {
+    position: relative;
+    top: 0;
+  }
 }
