@@ -1,4 +1,4 @@
-import {} from "react";
+import { } from "react";
 import { motion } from "framer-motion";
 import "../styles/dashboard.css";
 import { useFetchdata } from "../hooks/fetchData";
@@ -9,12 +9,13 @@ import { BestSeller } from "./BestSeller";
 import { StyleFinder } from "./StyleFinder";
 import { ImgContainer } from "./ImgContainer";
 import { DownloadPantaloons } from "./DownloadPantaloons";
-import { HeroVideo } from "../components/HeroVideo";
+import { HeroSection } from "./HeroSection";
 import { PromoVideo } from "../components/PromoVideo";
 import { Footer } from "./Footer";
+import { HeroVideo } from "../components/HeroVideo"; // keep original if needed, but we replaced usage. Actually just remove it if unused.
 
 export const LandingPageComponent = () => {
-  const data = useFetchdata();
+  useFetchdata();
   return (
     <>
       <motion.div
@@ -23,20 +24,17 @@ export const LandingPageComponent = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        {data}
-        <useFetchdata />
-        <HeroVideo />
+        <HeroSection />
         <DealsOfTheDay />
         <NewArrivals />
-        <PromoVideo 
-          title="Season's Best Offers" 
-          description="Don't miss out on our exclusive deals!" 
+        <PromoVideo
+          title="Season's Best Offers"
+          description="Don't miss out on our exclusive deals!"
         />
         <TrendingNow />
         <StyleFinder />
         <BestSeller />
         <ImgContainer />
-        <DownloadPantaloons />
         <Footer />
       </motion.div>
     </>

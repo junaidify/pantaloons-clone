@@ -17,7 +17,10 @@ export const ProductCustomHook = ({
   heading_of_product_page,
 }) => {
   const product = useSelector((state) => state.fetchData.data);
-  const products = product.length > 0 ? product[0][category] : [];
+  // MongoDB returns flat array, filter by category
+  const products = product.length > 0
+    ? product.filter(p => p.category === category)
+    : [];
   const [filters, setFilters] = useState({
     brand: false,
     price: false,
@@ -103,20 +106,19 @@ export const ProductCustomHook = ({
     }
 
     const wishlistItem = {
-      id: item.id,
+      productId: item.id,
       title: item.title,
-      features: item.features,
-      brand: item.brand,
+      category: category,
       price: item.price,
       image: item.image,
+      brand: item.brand,
+      rating: item.rating,
     };
 
     console.log("Adding to wishlist:", wishlistItem);
 
     api
-      .post(`/wishlist`, {
-        [category]: wishlistItem,
-      })
+      .post(`/wishlist`, wishlistItem)
       .then((response) => {
         console.log(response.data);
       })

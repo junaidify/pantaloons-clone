@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { API_REQUEST } from "../constants/actionTypes";
-import axios from "axios";
+import api from "../config/api";
 
 export const useFetchdata = () => {
   const dispatch = useDispatch();
@@ -11,9 +11,7 @@ export const useFetchdata = () => {
       dispatch({ type: API_REQUEST.FETCH });
 
       try {
-        const res = await axios.get(
-          "https://pantaloons-clone-10.onrender.com/products"
-        );
+        const res = await api.get("/products");
         dispatch({ type: API_REQUEST.SUCCESS, payload: res.data });
         console.log(res.data);
       } catch (err) {

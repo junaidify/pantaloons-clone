@@ -1,19 +1,23 @@
 require('dotenv').config();
-const jsonServer = require("json-server");
 const express = require("express");
 const cors = require("cors");
+const connectDB = require("./config/database");
 const paymentRoutes = require("./routes/payment");
+const productsRoutes = require("./routes/products");
+const cartRoutes = require("./routes/cart");
+const wishlistRoutes = require("./routes/wishlist");
 
-const server = jsonServer.create();
-const router = jsonServer.router("db.json");
-const middlewares = jsonServer.defaults();
+const app = express();
 const port = process.env.PORT || 3000;
+
+// Connect to MongoDB
+connectDB();
 
 const allowedOrigins = process.env.ALLOWED_ORIGINS 
   ? process.env.ALLOWED_ORIGINS.split(',')
   : ['http://localhost:5173', 'http://localhost:3000'];
 
-server.use(cors({
+app.use(cors({
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
@@ -24,15 +28,37 @@ server.use(cors({
   credentials: true,
 }));
 
-server.use(express.json());
-server.use(middlewares);
+app.use(express.json());
 
-server.use('/payment', paymentRoutes);
+// API Routes
+app.use('/products', productsRoutes);
+app.use('/cart', cartRoutes);
+app.use('/wishlist', wishlistRoutes);
+app.use('/payment', paymentRoutes);
 
-server.use(router);
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', message: 'Server is running' });
+});
 
-server.listen(port, () => {
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ error: 'Route not found' });
+});
+
+// Error handler
+app.use((err, req, res, next) => {
+  console.error('Error:', err);
+  res.status(err.status || 500).json({ 
+    error: err.message || 'Internal server error' 
+  });
+});
+
+app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
-  console.log(`JSON Server endpoint: http://localhost:${port}`);
-  console.log(`Payment endpoint: http://localhost:${port}/payment`);
+  console.log(`API endpoint: http://localhost:${port}`);
+  console.log(`Products: http://localhost:${port}/products`);
+  console.log(`Cart: http://localhost:${port}/cart`);
+  console.log(`Wishlist: http://localhost:${port}/wishlist`);
+  console.log(`Payment: http://localhost:${port}/payment`);
 });

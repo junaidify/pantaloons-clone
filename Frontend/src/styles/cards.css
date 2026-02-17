@@ -1,137 +1,203 @@
+/* Global Card Styles overwriting component specific class names for consistency */
+
+/* Container */
 .mens_cards_container {
-  margin: 5vh auto;
-  width: 90%;
+  margin: 3rem auto;
+  max-width: 1440px;
+  padding: 0 1.5rem;
 }
 
-.mens_cards_title {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #111827;
+/* Title */
+.mens_cards_title,
+.new_arrivals_cards_title {
+  font-family: var(--font-family);
+  font-size: 1.75rem;
+  /* 28px */
+  font-weight: 700;
+  color: var(--primary-color);
   margin-bottom: 2rem;
+  letter-spacing: -0.02em;
+  text-align: center;
 }
 
+/* Wrapper */
 .mens_cards_wrapper {
   position: relative;
   overflow: hidden;
+  padding: 1rem 0;
+  /* Space for hover shadows */
 }
 
+/* Flex Container */
 .mens_parent_of_cards {
   display: flex;
-  gap: 2rem;
-  transition: transform 0.5s ease;
+  gap: 1.5rem;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Card Item */
 .mens_cards {
-  min-width: 300px;
-  max-width: 300px;
-  background: #ffffff;
-  border-radius: 0.75rem;
+  min-width: 280px;
+  max-width: 280px;
+  background: var(--surface-color);
+  border-radius: var(--radius-md);
   overflow: hidden;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  /* box-shadow: var(--shadow-sm); removed for cleaner look, enabling on hover */
+  border: 1px solid var(--border-color);
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
-  padding-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .mens_cards:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+  border-color: transparent;
 }
 
+/* Image */
 .mens_cards_img_parent {
   width: 100%;
-  height: 350px;
+  height: 320px;
   overflow: hidden;
+  position: relative;
+  background-color: #F3F4F6;
 }
 
 .cards_img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  transition: transform 0.5s ease;
 }
 
 .mens_cards:hover .cards_img {
   transform: scale(1.05);
 }
 
+/* Content */
 .mens_cards_brand {
-  padding: 0.5rem 1rem 0;
-  font-weight: 600;
-  color: #111827;
-  font-size: 1.1rem;
+  padding: 1rem 1rem 0.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .mens_cards_features {
-  padding: 0.5rem 1rem;
-  color: #6B7280;
-  font-size: 0.9rem;
+  padding: 0 1rem;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 0.5rem;
 }
 
 .mens_cards_price {
-  padding: 0.5rem 1rem;
-  font-weight: bold;
-  color: #6366F1;
-  font-size: 1.2rem;
+  padding: 0 1rem 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 1.125rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
+.mens_cards_price span {
+  font-size: 0.75rem;
+  color: var(--accent-color);
+  background-color: #FEE2E2;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+/* Heart Icon */
 .mens_cards_heart {
   position: absolute;
   top: 1rem;
   right: 1rem;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 0.5rem;
+  width: 36px;
+  height: 36px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 50%;
-  font-size: 1.2rem;
-  color: #EC4899;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  box-shadow: var(--shadow-sm);
   z-index: 10;
+  transition: all 0.2s ease;
 }
 
 .mens_cards_heart:hover {
-  transform: scale(1.2);
-  background: #ffffff;
+  transform: scale(1.1);
+  color: var(--accent-color);
+  box-shadow: var(--shadow-md);
 }
 
+/* Navigation Buttons */
 .mens_cards_prev_btn,
 .mens_cards_next_btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: #6366F1;
-  color: white;
-  border: none;
-  padding: 1rem 1.2rem;
-  font-size: 1.5rem;
+  width: 44px;
+  height: 44px;
+  background: white;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
   border-radius: 50%;
   cursor: pointer;
-  z-index: 100;
-  transition: all 0.3s ease;
+  z-index: 20;
+  box-shadow: var(--shadow-md);
+  transition: all 0.2s ease;
+  opacity: 0;
+  /* Hidden by default */
+}
+
+.mens_cards_wrapper:hover .mens_cards_prev_btn,
+.mens_cards_wrapper:hover .mens_cards_next_btn {
+  opacity: 1;
+  /* Show on hover */
 }
 
 .mens_cards_prev_btn:hover,
 .mens_cards_next_btn:hover {
-  background: #4F46E5;
-  transform: translateY(-50%) scale(1.1);
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
 }
 
 .mens_cards_prev_btn {
-  left: -1rem;
+  left: 1rem;
 }
 
 .mens_cards_next_btn {
-  right: -1rem;
+  right: 1rem;
 }
 
+/* Section Specifics */
 #deals_of_the_day {
-  background: #F9FAFB;
-  padding: 3rem 0;
+  background: white;
+  padding: 2rem 0;
 }
 
+/* New Arrivals Gradient Title override */
 .new_arrivals_cards_title {
-  background: linear-gradient(135deg, #6366F1 0%, #EC4899 100%);
+  background: var(--gradient-primary);
+  /* Assuming var works or fallback */
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
