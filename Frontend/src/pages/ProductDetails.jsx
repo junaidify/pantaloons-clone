@@ -19,7 +19,10 @@ const MotionDiv = motion.div;
 export const ProductDetails = ({ category }) => {
   const { id } = useParams();
   const product = useSelector((state) => state.fetchData.data);
-  const products = product.length > 0 ? product[0][category] : [];
+  // MongoDB returns flat array, filter by category
+  const products = product.length > 0
+    ? product.filter(p => p.category === category)
+    : [];
 
   const [quantity, setQuantity] = useState(1);
   const { addToCart, handleSizeClick } = useCartCustom();

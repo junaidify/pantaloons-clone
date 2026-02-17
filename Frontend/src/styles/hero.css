@@ -1,0 +1,15 @@
+/* Hero Section Styles */
+.hero-section {
+    background: #0B0B0B;
+    background-image:
+        radial-gradient(circle at 50% 0%, #1a1a1a 0%, #0B0B0B 60%),
+        linear-gradient(to bottom, transparent 80%, black 100%);
+    background-repeat: no-repeat;
+    color: white;
+}
+
+/* Optional: Additional fine-tuning for card visuals if needed not covered by inline styles */
+.hero-card {
+    transform-style: preserve-3d;
+    will-change: transform;
+}

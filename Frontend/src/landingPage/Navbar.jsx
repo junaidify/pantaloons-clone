@@ -1,270 +1,283 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCartShopping,
-  faHeart,
+  faHome,
   faMagnifyingGlass,
+  faBell,
   faUser,
-  faRightFromBracket,
+  faCartShopping,
+  faRightFromBracket
 } from "@fortawesome/free-solid-svg-icons";
-import { Box, Grid, GridItem, Image, Button, Menu, MenuButton, MenuList, MenuItem, Avatar } from "@chakra-ui/react";
-import { motion } from "framer-motion";
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Avatar,
+  useToast
+} from "@chakra-ui/react";
+import { motion, AnimatePresence } from "framer-motion";
 import "../styles/navbar.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useSearchBar } from "../redux/searchbar";
 import { useAuth0 } from "@auth0/auth0-react";
-import { theme } from "../config/theme";
-
-const MotionBox = motion(Box);
+import { useState, useEffect } from "react";
 
 export const Navbar = () => {
   const {
     handleSearch,
-    selectedCategory,
-    setSelectedCategory,
     searchTerm,
     setSearchTerm,
   } = useSearchBar();
 
-  const { loginWithRedirect, logout, user, isAuthenticated, isLoading } = useAuth0();
+  const { loginWithRedirect, logout, user, isAuthenticated } = useAuth0();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const toast = useToast();
+
+  const [activeTab, setActiveTab] = useState("home");
+  const [hoveredTab, setHoveredTab] = useState(null);
+  const [isSearchActive, setIsSearchActive] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 80);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const path = location.pathname;
+    if (path === "/" || path.includes("/navbar/home")) setActiveTab("home");
+    else if (path.includes("/profile")) setActiveTab("profile");
+  }, [location]);
+
+  const navItems = [
+    { id: "home", icon: faHome, label: "Home", action: () => navigate("/") },
+    {
+      id: "search",
+      icon: faMagnifyingGlass,
+      label: "Search",
+      action: () => setIsSearchActive(true)
+    },
+    {
+      id: "notification",
+      icon: faBell,
+      label: "Notification",
+      action: () => toast({ title: "No new notifications", status: "info", duration: 1500, isClosable: true })
+    },
+    {
+      id: "profile",
+      icon: faUser,
+      label: isAuthenticated ? (user?.given_name || "Profile") : "Login",
+      action: () => isAuthenticated ? null : loginWithRedirect()
+    }
+  ];
+
+  const handleTabClick = (item) => {
+    setActiveTab(item.id);
+    if (item.action) item.action();
+  };
+
+  const containerVariants = {
+    full: {
+      position: "fixed",
+      top: 0,
+      left: 0,
+      width: "100%",
+      borderRadius: "0px",
+      backgroundColor: "rgba(255, 255, 255, 1)",
+      padding: "1rem 2rem",
+      justifyContent: "space-between",
+      boxShadow: "none",
+    },
+    pill: {
+      position: "fixed",
+      top: "1rem",
+      left: "50%",
+      width: "fit-content",
+      x: "-50%",
+      borderRadius: "9999px",
+      backgroundColor: "rgba(255, 255, 255, 0.95)",
+      padding: "0.5rem 1rem",
+      justifyContent: "center",
+      boxShadow: "0 8px 32px rgba(0,0,0,0.15)",
+      zIndex: 1000
+    }
+  };
+
+  const springTransition = {
+    type: "spring",
+    stiffness: 400,
+    damping: 25
+  };
 
   return (
     <>
-      <MotionBox
-        id="navbar_wrapper"
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5 }}
-        style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 1000,
-          background: theme.colors.surface,
-          boxShadow: theme.shadows.md,
-        }}
+      {!isScrolled && <div style={{ height: "80px", width: "100%" }}></div>}
+
+      <motion.nav
+        className="navbar-wrapper"
+        initial="full"
+        animate={isScrolled ? "pill" : "full"}
+        variants={containerVariants}
+        transition={springTransition}
       >
-        <div id="navbar">
-          <Box boxSize="sm" width="90%" height="8vh">
-            <Link className="link_comp" to="/">
-              <MotionBox
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.2 }}
-              >
-                <Image
-                  w="100%"
-                  h="100%"
-                  src="https://imagescdn.pantaloons.com/img/app/brands/pantaloons/icons/logo_pantaloons.svg"
-                  alt="Logo"
-                />
-              </MotionBox>
-            </Link>
-          </Box>
-
-          <div style={{ marginLeft: "5%" }}>
-            <Grid templateColumns="repeat(5, 1fr)">
-              <Link to="/navbar/mens">
-                <MotionBox
-                  as={GridItem}
-                  className="navbar_category"
-                  w="100%"
-                  h="auto"
-                  whileHover={{ y: -2 }}
-                  transition={{ duration: 0.2 }}
-                  style={{
-                    color: theme.colors.text.primary,
-                    fontWeight: "600",
-                  }}
-                >
-                  MEN
-                </MotionBox>
-              </Link>
-              <Link to="/navbar/women">
-                <MotionBox
-                  as={GridItem}
-                  className="navbar_category"
-                  w="100%"
-                  h="auto"
-                  whileHover={{ y: -2 }}
-                  transition={{ duration: 0.2 }}
-                  style={{
-                    color: theme.colors.text.primary,
-                    fontWeight: "600",
-                  }}
-                >
-                  WOMEN
-                </MotionBox>
-              </Link>
-              <Link to="/navbar/kids">
-                <MotionBox
-                  as={GridItem}
-                  className="navbar_category"
-                  w="100%"
-                  h="auto"
-                  whileHover={{ y: -2 }}
-                  transition={{ duration: 0.2 }}
-                  style={{
-                    color: theme.colors.text.primary,
-                    fontWeight: "600",
-                  }}
-                >
-                  KIDS
-                </MotionBox>
-              </Link>
-              <Link to="/navbar/home">
-                <MotionBox
-                  as={GridItem}
-                  className="navbar_category"
-                  w="100%"
-                  h="auto"
-                  whileHover={{ y: -2 }}
-                  transition={{ duration: 0.2 }}
-                  style={{
-                    color: theme.colors.text.primary,
-                    fontWeight: "600",
-                  }}
-                >
-                  HOME
-                </MotionBox>
-              </Link>
-
-              <Link to="/navbar/beauty">
-                <MotionBox
-                  as={GridItem}
-                  className="navbar_category"
-                  w="100%"
-                  h="auto"
-                  whileHover={{ y: -2 }}
-                  transition={{ duration: 0.2 }}
-                  style={{
-                    color: theme.colors.text.primary,
-                    fontWeight: "600",
-                  }}
-                >
-                  BEAUTY
-                </MotionBox>
-              </Link>
-            </Grid>
-          </div>
-
-          <Grid
-            className="navbar_search_parent"
-            gridTemplateColumns="60% 25% 15%"
-            gap={3}
+        {!isScrolled && (
+          <motion.div
+            className="navbar-logo"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{ width: '200px' }}
           >
-            <input
-              className="navbar_search"
-              type="text"
-              placeholder="Search products..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              style={{
-                borderRadius: theme.borderRadius.lg,
-                border: `2px solid ${theme.colors.border.light}`,
-                transition: theme.transitions.normal,
-              }}
-            />
-            <select
-              value={selectedCategory}
-              className="navbar_search_category"
-              style={{
-                borderRadius: theme.borderRadius.lg,
-                backgroundColor: "inherit",
-                border: `2px solid ${theme.colors.border.light}`,
-                color: theme.colors.text.primary,
-              }}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-            >
-              <option value="mens">Mens</option>
-              <option value="women">Women</option>
-              <option value="kids">Kids</option>
-              <option value="home">Home</option>
-              <option value="beauty">Beauty</option>
-            </select>
-            <MotionBox
-              as="p"
-              className="navbar_search_icon"
-              onClick={handleSearch}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              style={{
-                cursor: "pointer",
-                color: theme.colors.primary,
-              }}
-            >
-              <FontAwesomeIcon icon={faMagnifyingGlass} />
-            </MotionBox>
-          </Grid>
+            <Link to="/" className="navbar-logo-text" style={{ fontSize: '1.5rem', fontWeight: '900', letterSpacing: '-0.05em', textDecoration: 'none', color: 'black' }}>
+              PANTALOONS
+            </Link>
+          </motion.div>
+        )}
 
-          <Grid templateColumns="repeat(3, 1fr)" gap={4}>
-            <GridItem
-              className="navbar_category"
-              w="100%"
-              h="auto"
-            >
-              {!isLoading && (
-                <>
-                  {isAuthenticated ? (
-                    <Menu>
-                      <MenuButton
-                        as={Button}
-                        variant="ghost"
-                        p={0}
-                        _hover={{ bg: "transparent" }}
-                      >
-                        <Avatar
-                          size="sm"
-                          name={user?.name}
-                          src={user?.picture}
-                        />
-                      </MenuButton>
-                      <MenuList>
-                        <MenuItem isDisabled>{user?.name}</MenuItem>
-                        <MenuItem
-                          onClick={() => logout({ returnTo: window.location.origin })}
-                          icon={<FontAwesomeIcon icon={faRightFromBracket} />}
-                        >
-                          Logout
-                        </MenuItem>
-                      </MenuList>
-                    </Menu>
-                  ) : (
-                    <MotionBox
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => loginWithRedirect()}
-                      style={{ cursor: "pointer", color: theme.colors.primary }}
+        <div className="navbar-items-container" style={{ display: 'flex', gap: '12px', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+          <AnimatePresence mode="popLayout" initial={false}>
+            {navItems.map((item) => {
+              const isExpanded = activeTab === item.id || hoveredTab === item.id;
+
+              if (item.id === "search" && isSearchActive && isExpanded) {
+                return (
+                  <motion.div
+                    key="search-input"
+                    layout
+                    className="pill-item active"
+                    style={{
+                      cursor: 'text',
+                      padding: '0 1.25rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      height: '48px',
+                      borderRadius: '50px',
+                      background: '#F3F4F6',
+                      color: 'black',
+                      minWidth: '220px'
+                    }}
+                  >
+                    <FontAwesomeIcon icon={item.icon} className="pill-icon" />
+                    <motion.input
+                      autoFocus
+                      placeholder="Search..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          handleSearch();
+                          setIsSearchActive(false);
+                        }
+                      }}
+                      onBlur={() => setIsSearchActive(false)}
+                      style={{ border: 'none', background: 'transparent', outline: 'none', marginLeft: '0.5rem', width: '100%', fontSize: '0.95rem' }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                    />
+                  </motion.div>
+                );
+              }
+
+              if (item.id === "profile" && isAuthenticated) {
+                return (
+                  <Menu key={item.id} isLazy>
+                    <MenuButton
+                      as={motion.button}
+                      className={`pill-item ${isExpanded ? 'expanded' : ''}`}
+                      onClick={() => handleTabClick(item)}
+                      onMouseEnter={() => setHoveredTab(item.id)}
+                      onMouseLeave={() => setHoveredTab(null)}
+                      layout
+                      transition={springTransition}
+                      style={{
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 1.25rem', height: '48px', border: 'none', outline: 'none', cursor: 'pointer', borderRadius: '50px',
+                        backgroundColor: activeTab === item.id ? '#1a1a1a' : (hoveredTab === item.id ? '#f0f0f0' : 'transparent'),
+                        color: activeTab === item.id ? 'white' : 'black',
+                        minWidth: isExpanded ? '140px' : '48px'
+                      }}
                     >
-                      <FontAwesomeIcon icon={faUser} />
-                    </MotionBox>
-                  )}
-                </>
-              )}
-            </GridItem>
+                      {user?.picture ? <Avatar size="xs" src={user.picture} style={{ width: '24px', height: '24px' }} /> : <FontAwesomeIcon icon={item.icon} className="pill-icon" />}
+                      <AnimatePresence>
+                        {isExpanded && (
+                          <motion.span
+                            className="pill-text"
+                            initial={{ opacity: 0, width: 0 }}
+                            animate={{ opacity: 1, width: "auto" }}
+                            exit={{ opacity: 0, width: 0 }}
+                            transition={{ duration: 0.2 }}
+                            style={{ overflow: 'hidden', whiteSpace: 'nowrap', display: 'inline-block', marginLeft: '0.75rem', fontWeight: '500' }}
+                          >
+                            {user.given_name || "Profile"}
+                          </motion.span>
+                        )}
+                      </AnimatePresence>
+                    </MenuButton>
+                    <MenuList zIndex={2000}>
+                      <MenuItem onClick={() => navigate("/profile")}>My Account</MenuItem>
+                      <MenuItem onClick={() => logout()}>Logout</MenuItem>
+                    </MenuList>
+                  </Menu>
+                );
+              }
 
-            <GridItem className="navbar_category" w="100%" h="auto">
-              <Link to="/navbar/wishlist">
-                <MotionBox
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  style={{ color: theme.colors.secondary }}
+              return (
+                <motion.button
+                  key={item.id}
+                  layout
+                  className={`pill-item ${activeTab === item.id ? 'active' : ''}`}
+                  onClick={() => handleTabClick(item)}
+                  onMouseEnter={() => setHoveredTab(item.id)}
+                  onMouseLeave={() => setHoveredTab(null)}
+                  transition={springTransition}
+                  style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 1.25rem', height: '48px', border: 'none', outline: 'none', cursor: 'pointer', borderRadius: '50px',
+                    backgroundColor: activeTab === item.id ? '#1a1a1a' : (hoveredTab === item.id ? '#f0f0f0' : 'transparent'),
+                    color: activeTab === item.id ? 'white' : 'black',
+                    minWidth: isExpanded ? '120px' : '48px'
+                  }}
                 >
-                  <FontAwesomeIcon icon={faHeart} />
-                </MotionBox>
-              </Link>
-            </GridItem>
-            <GridItem className="navbar_category" w="100%" h="auto">
-              <Link to="/navbar/cart">
-                <MotionBox
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  style={{ color: theme.colors.primary }}
-                >
-                  <FontAwesomeIcon icon={faCartShopping} />
-                </MotionBox>
-              </Link>
-            </GridItem>
-          </Grid>
+                  <motion.div layout className="pill-icon">
+                    <FontAwesomeIcon icon={item.icon} style={{ fontSize: '1.2rem' }} />
+                  </motion.div>
+
+                  <AnimatePresence>
+                    {isExpanded && (
+                      <motion.span
+                        className="pill-text"
+                        initial={{ opacity: 0, width: 0 }}
+                        animate={{ opacity: 1, width: "auto" }}
+                        exit={{ opacity: 0, width: 0 }}
+                        transition={{ duration: 0.2 }}
+                        style={{ overflow: 'hidden', whiteSpace: 'nowrap', display: 'inline-block', marginLeft: '0.75rem', fontWeight: '500' }}
+                      >
+                        {item.label}
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </motion.button>
+              );
+            })}
+          </AnimatePresence>
         </div>
-      </MotionBox>
+
+        {!isScrolled && (
+          <div className="navbar-actions" style={{ display: 'flex', alignItems: 'center', width: '200px', justifyContent: 'flex-end' }}>
+            <Link to="/navbar/cart">
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                className="icon-btn"
+                style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', color: 'black' }}
+              >
+                <FontAwesomeIcon icon={faCartShopping} style={{ fontSize: '1.2rem' }} />
+              </motion.div>
+            </Link>
+          </div>
+        )}
+      </motion.nav>
     </>
   );
 };
